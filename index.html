@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Auto Booker</title>
+</head>
+
+<body>
+
+    <header>
+        <h1>Fill out info below to set booking request</h1>
+    </header>
+    <form onsubmit="sendData();return false">
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname"> <br>
+
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname"> <br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email"> <br>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber"> <br>
+
+        <label for="targetDateTime">Target Date and Time (minutes must be 00):</label>
+        <input type="datetime-local" id="targetDateTime" step="3600"> <br>
+        <input type="submit">
+    </form>
+
+    <script>
+        window.onload = function() {
+            let min = new Date().toISOString().split(":");
+            min.pop()
+            min.pop();
+            min = min.join('')
+            min += ":00:00"
+            document.getElementById("targetDateTime").min = min
+            console.log('set min: ' + min)
+        }
+
+        function sendData() {
+            let value = {
+                "fname": document.getElementById("fname").value,
+                "lname": document.getElementById("lname").value,
+                "email": document.getElementById("email").value,
+                "phoneNumber": document.getElementById("phoneNumber").value,
+                "targetDateTime": document.getElementById("targetDateTime").value
+            }
+            console.log(value)
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", 'https://srichel.com/booker', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                value: value
+            }));
+        }
+    </script>
+
+</body>
+
+</html>
